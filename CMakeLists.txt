@@ -3,10 +3,9 @@
 cmake_minimum_required(VERSION 3.13)
 project(sara-r4-arduino-client)
 
-include_directories(
-        src)
+include_directories("${CMAKE_CURRENT_LIST_DIR}/src")
 
-include_directories(src/)
+include(CMakeListsArduinoReferences.txt)
 
 set(CMAKE_CXX_FLAGS -std=c++11)
 
