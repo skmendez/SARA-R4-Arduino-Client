@@ -90,7 +90,7 @@ NB_NetworkStatus_t NB::begin(const char *pin, const char *apn, const char *usern
             unsigned long start = millis();
 
             while (ready() == 0) {
-                if (_timeout && !((millis() - start) < _timeout)) {
+                if (_timeout && millis() - start >= _timeout) {
                     _state = ERROR;
                     break;
                 }

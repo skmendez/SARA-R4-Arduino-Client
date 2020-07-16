@@ -48,7 +48,7 @@ NB_NetworkStatus_t GPRS::attachGPRS(bool synchronous) {
         unsigned long start = millis();
 
         while (ready() == 0) {
-            if (_timeout && !((millis() - start) < _timeout)) {
+            if (_timeout && millis() - start >= _timeout) {
                 _state = ERROR;
                 break;
             }

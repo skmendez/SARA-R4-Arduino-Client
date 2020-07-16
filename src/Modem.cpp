@@ -120,7 +120,7 @@ void Modem::debug(Print &p) {
 }
 
 void Modem::noDebug() {
-    _debugPrint = NULL;
+    _debugPrint = nullptr;
 }
 
 int Modem::autosense(unsigned long timeout) {
@@ -217,12 +217,12 @@ int Modem::waitForResponse(unsigned long timeout, String *responseDataStorage) {
         int r = ready();
 
         if (r != 0) {
-            _responseDataStorage = NULL;
+            _responseDataStorage = nullptr;
             return r;
         }
     }
 
-    _responseDataStorage = NULL;
+    _responseDataStorage = nullptr;
     _buffer = "";
     return -1;
 }
@@ -256,9 +256,9 @@ void Modem::poll() {
                     if (_buffer.length()) {
                         _lastResponseOrUrcMillis = millis();
 
-                        for (int i = 0; i < MAX_URC_HANDLERS; i++) {
-                            if (_urcHandlers[i] != NULL) {
-                                _urcHandlers[i]->handleUrc(_buffer);
+                        for (auto const & _urcHandler : _urcHandlers) {
+                            if (_urcHandler != nullptr) {
+                                _urcHandler->handleUrc(_buffer);
                             }
                         }
                     }
@@ -285,7 +285,7 @@ void Modem::poll() {
                     }
 
                     if (_ready != 0) {
-                        if (_responseDataStorage != NULL) {
+                        if (_responseDataStorage != nullptr) {
                             if (_ready > 1) {
                                 _buffer.substring(responseResultIndex);
                             } else {
@@ -295,7 +295,7 @@ void Modem::poll() {
 
                             *_responseDataStorage = _buffer;
 
-                            _responseDataStorage = NULL;
+                            _responseDataStorage = nullptr;
                         }
 
                         _atCommandState = AT_COMMAND_IDLE;
@@ -314,18 +314,18 @@ void Modem::setResponseDataStorage(String *responseDataStorage) {
 }
 
 void Modem::addUrcHandler(ModemUrcHandler *handler) {
-    for (int i = 0; i < MAX_URC_HANDLERS; i++) {
-        if (_urcHandlers[i] == NULL) {
-            _urcHandlers[i] = handler;
+    for (auto & _urcHandler : _urcHandlers) {
+        if (_urcHandler == nullptr) {
+            _urcHandler = handler;
             break;
         }
     }
 }
 
 void Modem::removeUrcHandler(ModemUrcHandler *handler) {
-    for (int i = 0; i < MAX_URC_HANDLERS; i++) {
-        if (_urcHandlers[i] == handler) {
-            _urcHandlers[i] = NULL;
+    for (auto & _urcHandler : _urcHandlers) {
+        if (_urcHandler == handler) {
+            _urcHandler = nullptr;
             break;
         }
     }

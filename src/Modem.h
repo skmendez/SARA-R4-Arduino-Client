@@ -93,8 +93,8 @@ private:
     Stream *_uart;
     std::unique_ptr<SerialStateUpdateHandler> _handler;
     unsigned long _baud;
-    int _resetPin;
-    int _powerOnPin;
+    uint8_t _resetPin;
+    uint8_t _powerOnPin;
     unsigned long _lastResponseOrUrcMillis;
 
     enum {

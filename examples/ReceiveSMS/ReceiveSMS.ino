@@ -55,8 +55,6 @@ void setup() {
 }
 
 void loop() {
-    int c;
-
     // If there are any SMSs available()
     if (sms.available()) {
         Serial.println("Message received from:");
@@ -73,7 +71,7 @@ void loop() {
         }
 
         // Read message bytes and print them
-        while ((c = sms.read()) != -1) {
+        while ((int c = sms.read()) != -1) {
             Serial.print((char) c);
         }
 
