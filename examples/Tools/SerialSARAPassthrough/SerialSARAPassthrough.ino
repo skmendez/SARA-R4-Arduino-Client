@@ -47,6 +47,6 @@ void loop() {
     }
 
     if (MODEM_SERIAL.available()) {
-        Serial.write(UART.read());
+        Serial.write(MODEM_SERIAL.read());
     }
 }
