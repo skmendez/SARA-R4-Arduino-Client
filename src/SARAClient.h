@@ -32,13 +32,17 @@
 #include "NBUdp.h"
 
 #ifdef TRAVIS_CI
-#define MODEM_SERIAL Serial
+
 #define BAUD 115200
+
+#ifndef
+#define MODEM_SERIAL Serial
 #define POWER_PIN 5
 #define RESET_PIN 6
+#endif
 
 #ifdef SARA_PWR_ON
-#define UART SerialSARA
+#define MODEM_SERIAL SerialSARA
 #define POWER_PIN SARA_PWR_ON
 #define RESET_PIN SARA_RESETN
 #endif
