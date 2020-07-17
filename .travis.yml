@@ -4,13 +4,18 @@ env:
     - CLI_VERSION=latest
   matrix:
     - BOARD="arduino:samd:mkrnb1500"
+    - BOARD="esp8266:esp8266:nodemcuv2"
 before_install:
   - mkdir -p "$HOME/bin"
   - curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR="$HOME/bin" sh
   - export PATH=$PATH:$HOME/bin
   - arduino-cli core update-index
   - if [[ "$BOARD" =~ "arduino:samd:" ]]; then
-    arduino-cli core install arduino:samd;
+      arduino-cli core install arduino:samd;
+    fi
+  - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
+      arduino-cli core update-index --additional-urls "http://arduino.esp8266.com/stable/package_esp8266com_index.json";
+      arduino-cli.exe core install --additional-urls "http://arduino.esp8266.com/stable/package_esp8266com_index.json" esp8266:esp8266;
     fi
   - buildExampleSketch() { arduino-cli compile --verbose --warnings all --fqbn $BOARD $PWD/examples/$1; }
   - buildExampleToolsSketch() { arduino-cli compile --verbose --warnings all --fqbn $BOARD $PWD/examples/Tools/$1; }
