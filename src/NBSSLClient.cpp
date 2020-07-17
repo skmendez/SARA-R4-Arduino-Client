@@ -30,9 +30,9 @@ enum {
 };
 
 
-NBSSLClient::NBSSLClient(Modem &modem, NBSecurityData certs[], size_t numCerts, bool synch) : NBClient(modem, synch) {
+NBSSLClient::NBSSLClient(Modem &modem, NBSecurityData* certs[], size_t numCerts, bool synch) : NBClient(modem, synch) {
     for (int i = 0; i < numCerts; ++i) {
-        addRootCert(&certs[i]);
+        addRootCert(certs[i]);
     }
 }
 
