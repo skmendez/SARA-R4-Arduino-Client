@@ -35,7 +35,7 @@
 
 #define BAUD 115200
 
-#ifndef
+#ifndef SARA_PWR_ON
 #define MODEM_SERIAL Serial
 #define POWER_PIN 5
 #define RESET_PIN 6
