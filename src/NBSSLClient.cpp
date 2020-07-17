@@ -29,10 +29,18 @@ enum {
     SSL_CLIENT_STATE_WAIT_DELETE_ROOT_CERT_RESPONSE
 };
 
-bool NBSSLClient::_rootCertsLoaded = false;
+
+NBSSLClient::NBSSLClient(Modem &modem, NBSecurityData certs[], size_t numCerts, bool synch) : NBClient(modem, synch) {
+    for (int i = 0; i < numCerts; ++i) {
+        addRootCert(&certs[i]);
+    }
+}
+
+
 
 NBSSLClient::NBSSLClient(Modem &modem, bool synch) :
-        NBClient(modem, synch) {}
+        NBSSLClient(modem, {}, 0, synch) {}
+
 
 NBSSLClient::~NBSSLClient() {
 }
@@ -51,22 +59,22 @@ int NBSSLClient::ready() {
 
     switch (_state) {
         case SSL_CLIENT_STATE_LOAD_ROOT_CERT: {
-            if (NB_ROOT_CERTS[_certIndex].size) {
+            if (_certs[_certIndex].size) {
                 // load the next root cert
-                _modem.sendf("AT+USECMNG=0,0,\"%s\",%d", NB_ROOT_CERTS[_certIndex].name,
-                             NB_ROOT_CERTS[_certIndex].size);
+                _modem.sendf("AT+USECMNG=0,%d,\"%s\",%d", _certs[_certIndex].certType, _certs[_certIndex].name,
+                             _certs[_certIndex].size);
                 if (_modem.waitForPrompt() != 1) {
                     // failure
                     ready = -1;
                 } else {
                     // send the cert contents
-                    _modem.write(NB_ROOT_CERTS[_certIndex].data, NB_ROOT_CERTS[_certIndex].size);
+                    _modem.write(_certs[_certIndex].data, _certs[_certIndex].size);
                     _state = SSL_CLIENT_STATE_WAIT_LOAD_ROOT_CERT_RESPONSE;
                     ready = 0;
                 }
             } else {
                 // remove the next root cert name
-                _modem.sendf("AT+USECMNG=2,0,\"%s\"", NB_ROOT_CERTS[_certIndex].name);
+                _modem.sendf("AT+USECMNG=2,0,\"%s\"", _certs[_certIndex].name);
 
                 _state = SSL_CLIENT_STATE_WAIT_DELETE_ROOT_CERT_RESPONSE;
                 ready = 0;
@@ -79,7 +87,7 @@ int NBSSLClient::ready() {
                 // error
             } else {
                 _certIndex++;
-                if (_certIndex == NB_NUM_ROOT_CERTS) {
+                if (_certIndex == _numCerts) {
                     // all certs loaded
                     _rootCertsLoaded = true;
                 } else {
@@ -95,7 +103,7 @@ int NBSSLClient::ready() {
             // ignore ready response, root cert might not exist
             _certIndex++;
 
-            if (_certIndex == NB_NUM_ROOT_CERTS) {
+            if (_certIndex == _numCerts) {
                 // all certs loaded
                 _rootCertsLoaded = true;
             } else {
@@ -123,4 +131,15 @@ int NBSSLClient::connect(const char *host, uint16_t port) {
     _state = SSL_CLIENT_STATE_LOAD_ROOT_CERT;
 
     return connectSSL(host, port);
+}
+
+bool NBSSLClient::addRootCert(NBSecurityData *cert) {
+    for (auto & _rootCert : _rootCerts) {
+        if (_rootCert == nullptr) {
+            _rootCert = cert;
+            _numCerts++;
+            return true;
+        }
+    }
+    return false;
 }

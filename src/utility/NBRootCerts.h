@@ -23,14 +23,22 @@
 #include <stddef.h>
 #include <stdint.h>
 
-struct NBRootCert {
+enum {
+    CA,
+    CC,
+    PK,
+};
+
+struct NBSecurityData {
+    const int certType;
     const char *name;
     const uint8_t *data;
     const int size;
 };
 
-static const NBRootCert NB_ROOT_CERTS[] = {
+static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
         {
+            CA,
                 "AddTrust_External_CA_Root",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x04, 0x36, 0x30, 0x82, 0x03, 0x1e, 0xa0, 0x03, 0x02, 0x01,
@@ -127,7 +135,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 1082
         },
-        {
+        { 0,
                 "Baltimore_CyberTrust_Root",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x03, 0x77, 0x30, 0x82, 0x02, 0x5f, 0xa0, 0x03, 0x02, 0x01,
@@ -208,7 +216,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 891
         },
-        {
+        { CA,
                 "COMODO_RSA_Certification_Authority",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x05, 0xd8, 0x30, 0x82, 0x03, 0xc0, 0xa0, 0x03, 0x02, 0x01,
@@ -339,7 +347,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 1500
         },
-        {
+        { CA,
                 "DST_Root_CA_X3",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x03, 0x4a, 0x30, 0x82, 0x02, 0x32, 0xa0, 0x03, 0x02, 0x01,
@@ -416,7 +424,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 846
         },
-        {
+        { 0,
                 "DigiCert_High_Assurance_EV_Root_CA",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x03, 0xc5, 0x30, 0x82, 0x02, 0xad, 0xa0, 0x03, 0x02, 0x01,
@@ -503,7 +511,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 969
         },
-        {
+        { CA,
                 "Entrust_Root_Certification_Authority",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x04, 0x91, 0x30, 0x82, 0x03, 0x79, 0xa0, 0x03, 0x02, 0x01,
@@ -607,7 +615,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 1173
         },
-        {
+        {CA,
                 "Equifax_Secure_Certificate_Authority",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x03, 0x20, 0x30, 0x82, 0x02, 0x89, 0xa0, 0x03, 0x02, 0x01,
@@ -680,7 +688,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 804
         },
-        {
+        {CA,
                 "GeoTrust_Global_CA",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x03, 0x54, 0x30, 0x82, 0x02, 0x3c, 0xa0, 0x03, 0x02, 0x01,
@@ -758,7 +766,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 856
         },
-        {
+        {CA,
                 "GeoTrust_Primary_Certification_Authority_G3",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x03, 0xfe, 0x30, 0x82, 0x02, 0xe6, 0xa0, 0x03, 0x02, 0x01,
@@ -850,7 +858,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 1026
         },
-        {
+        {CA,
                 "GlobalSign",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x03, 0xba, 0x30, 0x82, 0x02, 0xa2, 0xa0, 0x03, 0x02, 0x01,
@@ -936,7 +944,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 958
         },
-        {
+        {CA,
                 "Go_Daddy_Root_Certificate_Authority_G2",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x03, 0xc5, 0x30, 0x82, 0x02, 0xad, 0xa0, 0x03, 0x02, 0x01,
@@ -1023,7 +1031,7 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 969
         },
-        {
+        {CA,
                 "VeriSign_Class_3_Public_Primary_Certification_Authority_G5",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x04, 0xd3, 0x30, 0x82, 0x03, 0xbb, 0xa0, 0x03, 0x02, 0x01,
@@ -1133,12 +1141,12 @@ static const NBRootCert NB_ROOT_CERTS[] = {
                 },
                 1239
         },
-        {
+        {CA,
                 "AmazonRootCA1",
-                NULL, // remove
+                {}, // remove
                 0
         },
-        {
+        { CA,
                 "Starfield_Services_Root_Certificate_Authority_G2",
                 (const uint8_t[]) {
                         0x30, 0x82, 0x03, 0xef, 0x30, 0x82, 0x02, 0xd7, 0xa0, 0x03, 0x02, 0x01,

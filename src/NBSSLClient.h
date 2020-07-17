@@ -25,6 +25,7 @@
 class NBSSLClient : public NBClient {
 
 public:
+    NBSSLClient(Modem &modem, NBSecurityData certs[], size_t numCerts, bool synch = true);
     NBSSLClient(Modem &modem, bool synch = true);
 
     virtual ~NBSSLClient();
@@ -35,10 +36,18 @@ public:
 
     virtual int connect(const char *host, uint16_t port);
 
+    bool addRootCert(NBSecurityData *cert);
+
 private:
-    static bool _rootCertsLoaded;
-    int _certIndex;
-    int _state;
+#define MAX_ROOT_CERTS 4
+    NBSecurityData *_rootCerts[MAX_ROOT_CERTS];
+
+    int _numCerts = 0;
+
+    bool _rootCertsLoaded = false;
+    int _certIndex = 0;
+    int _state = 0;
+    NBSecurityData _certs[];
 };
 
 #endif
