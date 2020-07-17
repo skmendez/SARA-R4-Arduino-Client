@@ -38,15 +38,15 @@ void setup() {
     digitalWrite(RESET_PIN, LOW);
 
     Serial.begin(baud);
-    UART.begin(baud);
+    MODEM_SERIAL.begin(baud);
 }
 
 void loop() {
     if (Serial.available()) {
-        UART.write(Serial.read());
+        MODEM_SERIAL.write(Serial.read());
     }
 
-    if (UART.available()) {
+    if (MODEM_SERIAL.available()) {
         Serial.write(UART.read());
     }
 }

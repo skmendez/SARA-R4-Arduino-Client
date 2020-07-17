@@ -32,7 +32,7 @@
 #include "NBUdp.h"
 
 #ifdef TRAVIS_CI
-#define UART Serial
+#define MODEM_SERIAL Serial
 #define BAUD 115200
 #define POWER_PIN 5
 #define RESET_PIN 6
@@ -43,7 +43,7 @@
 #define RESET_PIN SARA_RESETN
 #endif
 
-Modem MODEM(UART, BAUD, POWER_PIN, RESET_PIN); // NOLINT(cert-err58-cpp)
+Modem MODEM(MODEM_SERIAL, BAUD, POWER_PIN, RESET_PIN); // NOLINT(cert-err58-cpp)
 #endif
 
 #endif // _SARAClient_H_INCLUDED

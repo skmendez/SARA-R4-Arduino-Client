@@ -22,6 +22,8 @@
 
 #include "NBClient.h"
 
+#include "utility/NBRootCerts.h"
+
 class NBSSLClient : public NBClient {
 
 public:
