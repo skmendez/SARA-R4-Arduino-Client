@@ -34,6 +34,8 @@ struct NBSecurityData {
     const int size;
 };
 
+/*
+
 static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
         {
                 "AddTrust_External_CA_Root",
@@ -1251,5 +1253,7 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
 };
 
 #define NB_NUM_ROOT_CERTS (sizeof(NB_ROOT_CERTS) / sizeof(NB_ROOT_CERTS[0]))
+
+ */
 
 #endif
