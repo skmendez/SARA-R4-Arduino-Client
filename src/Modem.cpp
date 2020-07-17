@@ -38,10 +38,10 @@ Modem::Modem(Stream &uart, unsigned long baud, int resetPin, int powerOnPin,
     _buffer.reserve(64);
 }
 
-
-class HardwareSerialStateUpdateHandler : public SerialStateUpdateHandler {
+template<class T>
+class TStateUpdateHandler : public SerialStateUpdateHandler {
 public:
-    HardwareSerialStateUpdateHandler(HardwareSerial &uart) : _uart(uart) {}
+    TStateUpdateHandler(T &uart) : _uart(uart) {}
 
     void updateState(SerialState desiredState) override {
         if (desiredState.isBegin) {
@@ -52,11 +52,16 @@ public:
     }
 
 private:
-    HardwareSerial &_uart;
+    T &_uart;
 };
 
 Modem::Modem(HardwareSerial &uart, unsigned long baud, int resetPin, int powerOnPin) :
-        Modem((Stream &) uart, baud, resetPin, powerOnPin, new HardwareSerialStateUpdateHandler(uart)) {}
+        Modem((Stream &) uart, baud, resetPin, powerOnPin, new TStateUpdateHandler<HardwareSerial>(uart)) {}
+
+#ifdef SOFTWARE_SERIAL_ENABLED
+Modem::Modem(SoftwareSerial &uart, unsigned long baud, int resetPin, int powerOnPin) :
+        Modem((Stream &) uart, baud, resetPin, powerOnPin, new TStateUpdateHandler<SoftwareSerial>(uart)) {}
+#endif
 
 int Modem::begin(bool restart) {
     _handler->updateState({_baud > 115200 ? 115200 : _baud, true});

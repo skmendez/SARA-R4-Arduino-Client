@@ -26,6 +26,36 @@
 #include <Arduino.h>
 #include <memory>
 
+
+
+#ifdef ARDUINO_ARCH_AVR                    // Arduino AVR boards (Uno, Pro Micro, etc.)
+#define SOFTWARE_SERIAL_ENABLED // Enable software serial
+#endif
+
+#ifdef ARDUINO_ARCH_ESP8266
+#define SOFTWARE_SERIAL_ENABLED // Enable software serial
+#endif
+
+#ifdef ARDUINO_ARCH_SAMD                    // Arduino SAMD boards (SAMD21, etc.)
+#define SOFTWARE_SERIAL_ENABLEDx // Disable software serial
+#endif
+
+#ifdef ARDUINO_ARCH_APOLLO3                // Arduino Apollo boards (Artemis module, RedBoard Artemis, etc)
+#define SOFTWARE_SERIAL_ENABLED // Enable software serial
+#endif
+
+#ifdef ARDUINO_ARCH_STM32                  // STM32 based boards (Disco, Nucleo, etc)
+#define SOFTWARE_SERIAL_ENABLED // Enable software serial
+#endif
+
+#undef SOFTWARE_SERIAL_ENABLED
+
+#ifdef SOFTWARE_SERIAL_ENABLED
+#include <SoftwareSerial.h>
+#endif
+
+
+
 class ModemUrcHandler {
 public:
     virtual void handleUrc(const String &urc) = 0;
@@ -46,6 +76,10 @@ public:
     Modem(Stream &uart, unsigned long baud, int resetPin, int powerOnPin, SerialStateUpdateHandler *handler);
 
     Modem(HardwareSerial &uart, unsigned long baud, int resetPin, int powerOnPin);
+
+#ifdef SOFTWARE_SERIAL_ENABLED
+    Modem(SoftwareSerial &uart, unsigned long baud, int resetPin, int powerOnPin);
+#endif
 
     int begin(bool restart = true);
 
@@ -106,8 +140,8 @@ private:
     String *_responseDataStorage;
 
 #define MAX_URC_HANDLERS 8 // 7 sockets + GPRS
-    static ModemUrcHandler *_urcHandlers[MAX_URC_HANDLERS];
-    static Print *_debugPrint;
+    ModemUrcHandler *_urcHandlers[MAX_URC_HANDLERS];
+    Print *_debugPrint;
 };
 
 #endif
