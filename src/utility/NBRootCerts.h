@@ -34,7 +34,7 @@ struct NBSecurityData {
     const int size;
 };
 
-/*
+
 
 static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
         {
@@ -1154,7 +1154,7 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
         },
         {
                 "AmazonRootCA1",
-                {}, // remove
+                nullptr, // remove
                 NBSecurityData::CA,
                 0
         },
@@ -1254,6 +1254,6 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
 
 #define NB_NUM_ROOT_CERTS (sizeof(NB_ROOT_CERTS) / sizeof(NB_ROOT_CERTS[0]))
 
- */
+
 
 #endif

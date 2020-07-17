@@ -39,7 +39,7 @@ NBSSLClient::NBSSLClient(Modem &modem, NBSecurityData certs[], size_t numCerts, 
 
 
 NBSSLClient::NBSSLClient(Modem &modem, bool synch) :
-        NBSSLClient(modem, {}, 0, synch) {}
+        NBSSLClient(modem, nullptr, 0, synch) {}
 
 
 NBSSLClient::~NBSSLClient() {
