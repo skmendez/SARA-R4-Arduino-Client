@@ -12,7 +12,7 @@
 #define POWER_PIN 5
 #define RESET_PIN 6
 
-#ifdef SAMD21
+#ifdef SARA_PWR_ON
 #define UART SerialSARA
 #define POWER_PIN SARA_PWR_ON
 #define RESET_PIN SARA_RESETN
