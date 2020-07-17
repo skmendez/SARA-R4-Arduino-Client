@@ -14,9 +14,10 @@
 
 // libraries
 #include <SARAClient.h>
+#include "../../modemconfig.h"
 
 // pin manager object
-NBPIN PINManager;
+NBPIN PINManager(MODEM);
 
 // save input in serial by user
 String user_input = "";

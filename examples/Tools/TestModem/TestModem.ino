@@ -17,8 +17,10 @@
 // libraries
 #include <SARAClient.h>
 
+#include "../../modemconfig.h"
+
 // modem verification object
-NBModem modem;
+NBModem modem(MODEM);
 
 // IMEI variable
 String IMEI = "";

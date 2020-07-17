@@ -21,15 +21,16 @@
 #include <SARAClient.h>
 
 #include "arduino_secrets.h"
+#include "../../modemconfig.h"
 
 // Please enter your sensitive data in the Secret tab or arduino_secrets.h
 // PIN Number
 const char PINNUMBER[] = SECRET_PINNUMBER;
 
 // initialize the library instance
-NB nbAccess;     // include a 'true' parameter to enable debugging
-NBScanner scannerNetworks;
-NBModem modemTest;
+NB nbAccess(MODEM);     // include a 'true' parameter to enable debugging
+NBScanner scannerNetworks(MODEM);
+NBModem modemTest(MODEM);
 
 // Save data variables
 String IMEI = "";

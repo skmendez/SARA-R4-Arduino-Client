@@ -17,15 +17,16 @@
 #include <SARAClient.h>
 
 #include "arduino_secrets.h"
+#include "../../modemconfig.h"
 
 // Please enter your sensitive data in the Secret tab or arduino_secrets.h
 // PIN Number
 const char PINNUMBER[] = SECRET_PINNUMBER;
 
 // initialize the library instance
-NB nbAccess;        // NB access: include a 'true' parameter for debug enabled
-GPRS gprsAccess;  // GPRS access
-NBClient client;  // Client service for TCP connection
+NB nbAccess(MODEM);        // NB access: include a 'true' parameter for debug enabled
+GPRS gprsAccess(MODEM);  // GPRS access
+NBClient client(MODEM);  // Client service for TCP connection
 
 // messages for serial monitor response
 String oktext = "OK";
@@ -46,6 +47,26 @@ void setup() {
     // initialize serial communications and wait for port to open:
     Serial.begin(9600);
     while (!Serial) { ; // wait for serial port to connect. Needed for Leonardo only
+    }
+}
+
+/*
+  Read input serial
+ */
+int readSerial(char result[]) {
+    int i = 0;
+    while (1) {
+        while (Serial.available() > 0) {
+            char inChar = Serial.read();
+            if (inChar == '\n') {
+                result[i] = '\0';
+                return 0;
+            }
+            if (inChar != '\r') {
+                result[i] = inChar;
+                i++;
+            }
+        }
     }
 }
 
@@ -145,26 +166,6 @@ void loop() {
                 Serial.println("disconnecting.");
                 client.stop();
                 test = false;
-            }
-        }
-    }
-}
-
-/*
-  Read input serial
- */
-int readSerial(char result[]) {
-    int i = 0;
-    while (1) {
-        while (Serial.available() > 0) {
-            char inChar = Serial.read();
-            if (inChar == '\n') {
-                result[i] = '\0';
-                return 0;
-            }
-            if (inChar != '\r') {
-                result[i] = inChar;
-                i++;
             }
         }
     }
