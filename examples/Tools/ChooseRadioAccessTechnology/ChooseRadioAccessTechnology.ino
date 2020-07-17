@@ -23,9 +23,9 @@
   by Giampaolo Mancini
 
 */
+#define TRAVIS_CI
 
 #include <SARAClient.h>
-#include "../../modemconfig.h"
 
 void setup() {
     Serial.begin(115200);

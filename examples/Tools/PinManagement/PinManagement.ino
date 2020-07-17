@@ -13,8 +13,9 @@
 */
 
 // libraries
+#define TRAVIS_CI
+
 #include <SARAClient.h>
-#include "../../modemconfig.h"
 
 // pin manager object
 NBPIN PINManager(MODEM);

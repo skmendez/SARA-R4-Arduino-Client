@@ -18,11 +18,11 @@
 */
 
 // Include the NB library
+#define TRAVIS_CI
+
 #include <SARAClient.h>
 
 #include "arduino_secrets.h"
-
-#include "../modemconfig.h"
 
 // Please enter your sensitive data in the Secret tab or arduino_secrets.h
 // PIN Number

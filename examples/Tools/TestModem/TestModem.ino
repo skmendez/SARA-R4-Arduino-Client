@@ -15,9 +15,9 @@
 */
 
 // libraries
-#include <SARAClient.h>
+#define TRAVIS_CI
 
-#include "../../modemconfig.h"
+#include <SARAClient.h>
 
 // modem verification object
 NBModem modem(MODEM);

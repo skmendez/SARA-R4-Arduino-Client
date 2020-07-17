@@ -19,7 +19,9 @@
    Sandeep Mistry
 */
 
-#include "../../modemconfig.h"
+#define TRAVIS_CI
+
+#include <SARAClient.h>
 
 // baud rate used for both Serial ports
 unsigned long baud = 115200;
