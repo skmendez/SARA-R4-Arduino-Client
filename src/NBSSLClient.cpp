@@ -59,22 +59,22 @@ int NBSSLClient::ready() {
 
     switch (_state) {
         case SSL_CLIENT_STATE_LOAD_ROOT_CERT: {
-            if (_certs[_certIndex].size) {
+            if (_certs[_certIndex]->size) {
                 // load the next root cert
-                _modem.sendf("AT+USECMNG=0,%d,\"%s\",%d", _certs[_certIndex].certType, _certs[_certIndex].name,
-                             _certs[_certIndex].size);
+                _modem.sendf("AT+USECMNG=0,%d,\"%s\",%d", _certs[_certIndex]->certType, _certs[_certIndex]->name,
+                             _certs[_certIndex]->size);
                 if (_modem.waitForPrompt() != 1) {
                     // failure
                     ready = -1;
                 } else {
                     // send the cert contents
-                    _modem.write(_certs[_certIndex].data, _certs[_certIndex].size);
+                    _modem.write(_certs[_certIndex]->data, _certs[_certIndex]->size);
                     _state = SSL_CLIENT_STATE_WAIT_LOAD_ROOT_CERT_RESPONSE;
                     ready = 0;
                 }
             } else {
                 // remove the next root cert name
-                _modem.sendf("AT+USECMNG=2,0,\"%s\"", _certs[_certIndex].name);
+                _modem.sendf("AT+USECMNG=2,0,\"%s\"", _certs[_certIndex]->name);
 
                 _state = SSL_CLIENT_STATE_WAIT_DELETE_ROOT_CERT_RESPONSE;
                 ready = 0;
