@@ -30,10 +30,28 @@ boolean auth = false;
 String oktext = "OK";
 String errortext = "ERROR";
 
+/*
+  Read input serial
+ */
+String readSerial() {
+    String text = "";
+    while (1) {
+        while (Serial.available() > 0) {
+            char inChar = Serial.read();
+            if (inChar == '\n') {
+                return text;
+            }
+            if (inChar != '\r') {
+                text += inChar;
+            }
+        }
+    }
+}
+
 void setup() {
     // initialize serial communications and wait for port to open:
     Serial.begin(9600);
-    while (!Serial) { ; // wait for serial port to connect. Needed for Leonardo only
+    while (!Serial) { // wait for serial port to connect. Needed for Leonardo only
     }
 
     Serial.println("Change PIN example\n");
@@ -122,22 +140,4 @@ void loop() {
         Serial.println("Incorrect option. Try again!.");
     }
     delay(1000);
-}
-
-/*
-  Read input serial
- */
-String readSerial() {
-    String text = "";
-    while (1) {
-        while (Serial.available() > 0) {
-            char inChar = Serial.read();
-            if (inChar == '\n') {
-                return text;
-            }
-            if (inChar != '\r') {
-                text += inChar;
-            }
-        }
-    }
 }

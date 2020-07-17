@@ -38,7 +38,7 @@ int port = 443; // port 443 is the default for HTTPS
 void setup() {
     // initialize serial communications and wait for port to open:
     Serial.begin(9600);
-    while (!Serial) { ; // wait for serial port to connect. Needed for native USB port only
+    while (!Serial) { // wait for serial port to connect. Needed for native USB port only
     }
 
     Serial.println("Starting Arduino web client.");

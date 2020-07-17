@@ -47,7 +47,7 @@ boolean use_proxy = false;
 void setup() {
     // initialize serial communications and wait for port to open:
     Serial.begin(9600);
-    while (!Serial) { ; // wait for serial port to connect. Needed for Leonardo only
+    while (!Serial) { // wait for serial port to connect. Needed for Leonardo only
     }
 }
 

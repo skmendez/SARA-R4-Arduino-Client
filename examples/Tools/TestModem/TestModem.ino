@@ -28,7 +28,7 @@ String IMEI = "";
 void setup() {
     // initialize serial communications and wait for port to open:
     Serial.begin(9600);
-    while (!Serial) { ; // wait for serial port to connect. Needed for Leonardo only
+    while (!Serial) { // wait for serial port to connect. Needed for Leonardo only
     }
 
     // start modem test (reset and check response)
@@ -40,7 +40,10 @@ void setup() {
     }
 }
 
+bool complete = false;
+
 void loop() {
+    if (complete) return; // do nothing forevermore
     // get modem IMEI
     Serial.print("Checking IMEI...");
     IMEI = modem.getIMEI();
@@ -61,6 +64,6 @@ void loop() {
     } else {
         Serial.println("Error: Could not get IMEI");
     }
-    // do nothing:
-    while (true);
+
+    complete = true;
 }

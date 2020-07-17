@@ -60,6 +60,39 @@ void setup() {
     Serial.println();
 }
 
+
+bool setRAT(String choice) {
+    String response;
+
+    Serial.print("Disconnecting from network: ");
+    MODEM.sendf("AT+COPS=2");
+    MODEM.waitForResponse(2000);
+    Serial.println("done.");
+
+    Serial.print("Setting Radio Access Technology: ");
+    MODEM.sendf("AT+URAT=%s", choice.c_str());
+    MODEM.waitForResponse(2000, &response);
+    Serial.println("done.");
+
+    return true;
+}
+
+bool apply() {
+    Serial.print("Applying changes and saving configuration: ");
+    MODEM.send("AT+CFUN=15");
+    MODEM.waitForResponse(5000);
+    delay(5000);
+
+    do {
+        delay(1000);
+        MODEM.noop();
+    } while (MODEM.waitForResponse(1000) != 1);
+
+    Serial.println("done.");
+
+    return true;
+}
+
 void loop() {
     String uratChoice;
 
@@ -97,36 +130,4 @@ void loop() {
     Serial.println("Radio Access Technology selected.");
     Serial.println("Now you can upload your 4G application sketch.");
     while (true);
-}
-
-bool setRAT(String choice) {
-    String response;
-
-    Serial.print("Disconnecting from network: ");
-    MODEM.sendf("AT+COPS=2");
-    MODEM.waitForResponse(2000);
-    Serial.println("done.");
-
-    Serial.print("Setting Radio Access Technology: ");
-    MODEM.sendf("AT+URAT=%s", choice.c_str());
-    MODEM.waitForResponse(2000, &response);
-    Serial.println("done.");
-
-    return true;
-}
-
-bool apply() {
-    Serial.print("Applying changes and saving configuration: ");
-    MODEM.send("AT+CFUN=15");
-    MODEM.waitForResponse(5000);
-    delay(5000);
-
-    do {
-        delay(1000);
-        MODEM.noop();
-    } while (MODEM.waitForResponse(1000) != 1);
-
-    Serial.println("done.");
-
-    return true;
 }
