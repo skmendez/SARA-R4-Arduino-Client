@@ -24,7 +24,6 @@
 #include <stdio.h>
 
 #include <Arduino.h>
-#include <memory>
 
 
 
@@ -67,6 +66,7 @@ struct SerialState {
 class SerialStateUpdateHandler {
 public:
     virtual void updateState(SerialState desiredState) = 0;
+    virtual ~SerialStateUpdateHandler() = default;
 };
 
 class Modem {
@@ -78,6 +78,8 @@ public:
 #ifdef SOFTWARE_SERIAL_ENABLED
     Modem(SoftwareSerial &uart, unsigned long baud, int resetPin, int powerOnPin);
 #endif
+
+    virtual ~Modem();
 
     int begin(bool restart = true);
 
@@ -123,7 +125,7 @@ public:
 
 private:
     Stream *_uart;
-    std::unique_ptr<SerialStateUpdateHandler> _handler;
+    SerialStateUpdateHandler* _handler;
     unsigned long _baud;
     uint8_t _resetPin;
     uint8_t _powerOnPin;
@@ -138,8 +140,8 @@ private:
     String *_responseDataStorage;
 
 #define MAX_URC_HANDLERS 8 // 7 sockets + GPRS
-    ModemUrcHandler *_urcHandlers[MAX_URC_HANDLERS];
-    Print *_debugPrint;
+    ModemUrcHandler *_urcHandlers[MAX_URC_HANDLERS] = {nullptr};
+    Print *_debugPrint = nullptr;
 };
 
 #endif

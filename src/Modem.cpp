@@ -21,9 +21,6 @@
 
 #define MODEM_MIN_RESPONSE_OR_URC_WAIT_TIME_MS 20
 
-ModemUrcHandler *Modem::_urcHandlers[MAX_URC_HANDLERS] = {NULL};
-Print *Modem::_debugPrint = NULL;
-
 Modem::Modem(Stream &uart, unsigned long baud, int resetPin, int powerOnPin,
              SerialStateUpdateHandler *handler) :
         _uart(&uart),
@@ -34,7 +31,7 @@ Modem::Modem(Stream &uart, unsigned long baud, int resetPin, int powerOnPin,
         _lastResponseOrUrcMillis(0),
         _atCommandState(AT_COMMAND_IDLE),
         _ready(1),
-        _responseDataStorage(NULL) {
+        _responseDataStorage(nullptr) {
     _buffer.reserve(64);
 }
 
@@ -71,7 +68,7 @@ int Modem::begin(bool restart) {
     pinMode(_powerOnPin, OUTPUT);
     digitalWrite(_powerOnPin, HIGH);
 
-    if (_resetPin > -1 && restart) {
+    if (_resetPin == 255 && restart) {
         pinMode(_resetPin, OUTPUT);
         digitalWrite(_resetPin, HIGH);
         delay(100);
@@ -338,4 +335,8 @@ void Modem::removeUrcHandler(ModemUrcHandler *handler) {
 
 void Modem::setBaudRate(unsigned long baud) {
     _baud = baud;
+}
+
+Modem::~Modem() {
+    delete _handler;
 }
