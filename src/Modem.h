@@ -48,8 +48,6 @@
 #define SOFTWARE_SERIAL_ENABLED // Enable software serial
 #endif
 
-#undef SOFTWARE_SERIAL_ENABLED
-
 #ifdef SOFTWARE_SERIAL_ENABLED
 #include <SoftwareSerial.h>
 #endif
