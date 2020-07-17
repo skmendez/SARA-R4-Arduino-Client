@@ -72,8 +72,10 @@ void loop() {
             sms.flush();
         }
 
+        int c;
+
         // Read message bytes and print them
-        while ((int c = sms.read()) != -1) {
+        while ((c = sms.read()) != -1) {
             Serial.print((char) c);
         }
 
