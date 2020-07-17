@@ -13,7 +13,7 @@
 */
 
 // libraries
-#include <MKRNB.h>
+#include <SARAClient.h>
 
 // pin manager object
 NBPIN PINManager;

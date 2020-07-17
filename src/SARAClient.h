@@ -17,8 +17,8 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef _MKRNB_H_INCLUDED
-#define _MKRNB_H_INCLUDED
+#ifndef _SARAClient_H_INCLUDED
+#define _SARAClient_H_INCLUDED
 
 #include "NB.h"
 #include "NB_SMS.h"
@@ -31,4 +31,4 @@
 #include "NBSSLClient.h"
 #include "NBUdp.h"
 
-#endif
+#endif // _SARAClient_H_INCLUDED

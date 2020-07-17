@@ -19,9 +19,10 @@
 
 */
 
-#include <MKRNB.h>
+#include <SARAClient.h>
 
 #include "arduino_secrets.h"
+#include "../modemconfig.h"
 
 // Please enter your sensitive data in the Secret tab or arduino_secrets.h
 // PIN Number
@@ -36,12 +37,12 @@ const int NTP_PACKET_SIZE = 48; // NTP time stamp is in the first 48 bytes of th
 byte packetBuffer[NTP_PACKET_SIZE]; //buffer to hold incoming and outgoing packets
 
 // initialize the library instance
-NBClient client;
-GPRS gprs;
-NB nbAccess;
+NBClient client(MODEM);
+GPRS gprs(MODEM);
+NB nbAccess(MODEM);
 
 // A UDP instance to let us send and receive packets over UDP
-NBUDP Udp;
+NBUDP Udp(MODEM);
 
 void setup() {
     // Open serial communications and wait for port to open:
@@ -67,6 +68,36 @@ void setup() {
 
     Serial.println("\nStarting connection to server...");
     Udp.begin(localPort);
+}
+
+// send an NTP request to the time server at the given address
+unsigned long sendNTPpacket(IPAddress &address) {
+    //Serial.println("1");
+    // set all bytes in the buffer to 0
+    memset(packetBuffer, 0, NTP_PACKET_SIZE);
+    // Initialize values needed to form NTP request
+    // (see URL above for details on the packets)
+    //Serial.println("2");
+    packetBuffer[0] = 0b11100011;   // LI, Version, Mode
+    packetBuffer[1] = 0;     // Stratum, or type of clock
+    packetBuffer[2] = 6;     // Polling Interval
+    packetBuffer[3] = 0xEC;  // Peer Clock Precision
+    // 8 bytes of zero for Root Delay & Root Dispersion
+    packetBuffer[12] = 49;
+    packetBuffer[13] = 0x4E;
+    packetBuffer[14] = 49;
+    packetBuffer[15] = 52;
+
+    //Serial.println("3");
+
+    // all NTP fields have been given values, now
+    // you can send a packet requesting a timestamp:
+    Udp.beginPacket(address, 123); //NTP requests are to port 123
+    //Serial.println("4");
+    Udp.write(packetBuffer, NTP_PACKET_SIZE);
+    //Serial.println("5");
+    Udp.endPacket();
+    //Serial.println("6");
 }
 
 void loop() {
@@ -117,34 +148,4 @@ void loop() {
     }
     // wait ten seconds before asking for the time again
     delay(10000);
-}
-
-// send an NTP request to the time server at the given address
-unsigned long sendNTPpacket(IPAddress &address) {
-    //Serial.println("1");
-    // set all bytes in the buffer to 0
-    memset(packetBuffer, 0, NTP_PACKET_SIZE);
-    // Initialize values needed to form NTP request
-    // (see URL above for details on the packets)
-    //Serial.println("2");
-    packetBuffer[0] = 0b11100011;   // LI, Version, Mode
-    packetBuffer[1] = 0;     // Stratum, or type of clock
-    packetBuffer[2] = 6;     // Polling Interval
-    packetBuffer[3] = 0xEC;  // Peer Clock Precision
-    // 8 bytes of zero for Root Delay & Root Dispersion
-    packetBuffer[12] = 49;
-    packetBuffer[13] = 0x4E;
-    packetBuffer[14] = 49;
-    packetBuffer[15] = 52;
-
-    //Serial.println("3");
-
-    // all NTP fields have been given values, now
-    // you can send a packet requesting a timestamp:
-    Udp.beginPacket(address, 123); //NTP requests are to port 123
-    //Serial.println("4");
-    Udp.write(packetBuffer, NTP_PACKET_SIZE);
-    //Serial.println("5");
-    Udp.endPacket();
-    //Serial.println("6");
 }

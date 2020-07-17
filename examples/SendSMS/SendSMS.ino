@@ -18,17 +18,20 @@
 */
 
 // Include the NB library
-#include <MKRNB.h>
+#include <SARAClient.h>
 
 #include "arduino_secrets.h"
+
+#include "../modemconfig.h"
 
 // Please enter your sensitive data in the Secret tab or arduino_secrets.h
 // PIN Number
 const char PINNUMBER[] = SECRET_PINNUMBER;
 
 // initialize the library instance
-NB nbAccess;
-NB_SMS sms;
+
+NB nbAccess(MODEM);
+NB_SMS sms(MODEM);
 
 void setup() {
     // initialize serial communications and wait for port to open:
@@ -55,6 +58,27 @@ void setup() {
     Serial.println("NB initialized");
 }
 
+/*
+  Read input serial
+ */
+int readSerial(char result[]) {
+    int i = 0;
+    while (1) {
+        while (Serial.available() > 0) {
+            char inChar = Serial.read();
+            if (inChar == '\n') {
+                result[i] = '\0';
+                Serial.flush();
+                return 0;
+            }
+            if (inChar != '\r') {
+                result[i] = inChar;
+                i++;
+            }
+        }
+    }
+}
+
 void loop() {
 
     Serial.print("Enter a mobile number: ");
@@ -76,25 +100,4 @@ void loop() {
     sms.print(txtMsg);
     sms.endSMS();
     Serial.println("\nCOMPLETE!\n");
-}
-
-/*
-  Read input serial
- */
-int readSerial(char result[]) {
-    int i = 0;
-    while (1) {
-        while (Serial.available() > 0) {
-            char inChar = Serial.read();
-            if (inChar == '\n') {
-                result[i] = '\0';
-                Serial.flush();
-                return 0;
-            }
-            if (inChar != '\r') {
-                result[i] = inChar;
-                i++;
-            }
-        }
-    }
 }

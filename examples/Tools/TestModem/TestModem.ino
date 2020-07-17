@@ -15,7 +15,7 @@
 */
 
 // libraries
-#include <MKRNB.h>
+#include <SARAClient.h>
 
 // modem verification object
 NBModem modem;

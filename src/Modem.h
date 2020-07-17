@@ -75,7 +75,7 @@ public:
 
     int waitForPrompt(unsigned long timeout = 500);
 
-    int waitForResponse(unsigned long timeout = 200, String *responseDataStorage = NULL);
+    int waitForResponse(unsigned long timeout = 200, String *responseDataStorage = nullptr);
 
     int ready();
 
@@ -109,7 +109,5 @@ private:
     static ModemUrcHandler *_urcHandlers[MAX_URC_HANDLERS];
     static Print *_debugPrint;
 };
-
-extern Modem MODEM2;
 
 #endif

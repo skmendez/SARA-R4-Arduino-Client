@@ -24,7 +24,7 @@
 
 */
 
-#include <MKRNB.h>
+#include <SARAClient.h>
 
 void setup() {
     Serial.begin(115200);

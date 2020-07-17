@@ -15,18 +15,19 @@
 */
 
 // libraries
-#include <MKRNB.h>
+#include <SARAClient.h>
 
 #include "arduino_secrets.h"
+#include "../modemconfig.h"
 
 // Please enter your sensitive data in the Secret tab or arduino_secrets.h
 // PIN Number
 const char PINNUMBER[] = SECRET_PINNUMBER;
 
 // initialize the library instance
-NBSSLClient client;
-GPRS gprs;
-NB nbAccess;
+NBSSLClient client(MODEM);
+GPRS gprs(MODEM);
+NB nbAccess(MODEM);
 
 // URL, path and port (for example: arduino.cc)
 char server[] = "arduino.cc";
@@ -74,7 +75,10 @@ void setup() {
     }
 }
 
+boolean complete = false;
+
 void loop() {
+    if (complete) return; // do nothing forevermore
     // if there are incoming bytes available
     // from the server, read them and print them:
     if (client.available()) {
@@ -87,8 +91,6 @@ void loop() {
         Serial.println();
         Serial.println("disconnecting.");
         client.stop();
-
-        // do nothing forevermore:
-        for (;;);
+        complete = true;
     }
 }

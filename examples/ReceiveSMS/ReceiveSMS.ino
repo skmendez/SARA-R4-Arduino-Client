@@ -14,17 +14,18 @@
 */
 
 // include the NB library
-#include <MKRNB.h>
+#include <SARAClient.h>
 
 #include "arduino_secrets.h"
+#include "../modemconfig.h"
 
 // Please enter your sensitive data in the Secret tab or arduino_secrets.h
 // PIN Number
 const char PINNUMBER[] = SECRET_PINNUMBER;
 
 // initialize the library instances
-NB nbAccess;
-NB_SMS sms;
+NB nbAccess(MODEM);
+NB_SMS sms(MODEM);
 
 // Array to hold the number an SMS is retrieved from
 char senderNumber[20];

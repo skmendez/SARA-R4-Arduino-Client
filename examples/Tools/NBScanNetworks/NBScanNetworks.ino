@@ -18,7 +18,7 @@
 */
 
 // libraries
-#include <MKRNB.h>
+#include <SARAClient.h>
 
 #include "arduino_secrets.h"
 

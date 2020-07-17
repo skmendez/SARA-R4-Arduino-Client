@@ -15,18 +15,19 @@
 */
 
 // libraries
-#include <MKRNB.h>
+#include <SARAClient.h>
 
 #include "arduino_secrets.h"
+#include "../modemconfig.h"
 
 // Please enter your sensitive data in the Secret tab or arduino_secrets.h
 // PIN Number
 const char PINNUMBER[] = SECRET_PINNUMBER;
 
 // initialize the library instance
-NBClient client;
-GPRS gprs;
-NB nbAccess;
+NBClient client(MODEM);
+GPRS gprs(MODEM);
+NB nbAccess(MODEM);
 
 // URL, path and port (for example: example.org)
 char server[] = "example.org";
