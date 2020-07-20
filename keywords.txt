@@ -1,10 +1,10 @@
 #######################################
-# Syntax Coloring Map For MKNB
+# Syntax Coloring Map For SARA-R4-Arduino-Client
 ####################################### 
 # Class
 #######################################
 
-MKRNB	KEYWORD1
+SARAClient	KEYWORD1
 NB	KEYWORD1
 NB_SMS	KEYWORD1
 GPRS	KEYWORD1

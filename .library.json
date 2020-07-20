@@ -1,29 +1,30 @@
 {
   "name": "MKRNB",
-  "version": "1.3.2",
+  "version": "0.1.0",
   "keywords": [
     "communication"
   ],
-  "description": "Enables NB/GRPS network connection using the Arduino MKR NB 1500 board.",
+  "description": "Enables NB/GRPS network connection using a SARA R4 module connected to an Arduino board.",
   "frameworks": [
     "arduino"
   ],
   "platforms": [
-    "atmelsam"
+    "atmelsam",
+    "esp8266"
   ],
   "authors": [
     {
-      "email": "info@arduino.cc",
+      "email": "skmendez@mit.edu",
       "url": null,
       "maintainer": true,
-      "name": "Arduino"
+      "name": "Sebastian Mendez"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/arduino-libraries/MKRNB"
+    "url": "https://github.com/skmendez/SARA-R4-Arduino-Client"
   },
-  "homepage": "http://www.arduino.cc/en/Reference/MKRNB",
+  "homepage": "https://github.com/skmendez/SARA-R4-Arduino-Client",
   "export": {
     "include": null,
     "exclude": [
@@ -35,5 +36,5 @@
       "*.pdf"
     ]
   },
-  "id": 5901
+  "license": "GPL-3.0-or-later"
 }
