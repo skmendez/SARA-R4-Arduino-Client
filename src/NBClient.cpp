@@ -52,7 +52,7 @@ NBClient::NBClient(Modem &modem, int socket, bool synch) :
         _port(0),
         _ssl(false),
         _writeSync(true),
-        NBSocketBuffer(NBSocketBufferClass(_modem)) {
+        _nbSocketBuffer(NBSocketBufferClass(_modem)) {
     _modem.addUrcHandler(this);
 }
 
@@ -329,7 +329,7 @@ uint8_t NBClient::connected() {
     }
 
     // call available to update socket state
-    if (NBSocketBuffer.available(_socket) < 0 || (_ssl && !_connected)) {
+    if (_nbSocketBuffer.available(_socket) < 0 || (_ssl && !_connected)) {
         stop();
 
         return 0;
@@ -357,7 +357,7 @@ int NBClient::read(uint8_t *buf, size_t size) {
         return 0;
     }
 
-    return NBSocketBuffer.read(_socket, buf, size);
+    return _nbSocketBuffer.read(_socket, buf, size);
 }
 
 int NBClient::read() {
@@ -381,7 +381,7 @@ int NBClient::available() {
         return 0;
     }
 
-    int avail = NBSocketBuffer.available(_socket);
+    int avail = _nbSocketBuffer.available(_socket);
 
     if (avail < 0) {
         stop();
@@ -394,7 +394,7 @@ int NBClient::available() {
 
 int NBClient::peek() {
     if (available() > 0) {
-        return NBSocketBuffer.peek(_socket);
+        return _nbSocketBuffer.peek(_socket);
     }
 
     return -1;
@@ -412,7 +412,7 @@ void NBClient::stop() {
     _modem.sendf("AT+USOCL=%d", _socket);
     _modem.waitForResponse(10000);
 
-    NBSocketBuffer.close(_socket);
+    _nbSocketBuffer.close(_socket);
 
     _socket = -1;
     _connected = false;
