@@ -28,17 +28,17 @@
 
 #define NB_SOCKET_BUFFER_SIZE 512
 
-NBSocketBufferClass::NBSocketBufferClass(Modem &modem) : _modem(modem) {
+NBSocketBuffer::NBSocketBuffer(Modem &modem) : _modem(modem) {
     memset(&_buffers, 0x00, sizeof(_buffers));
 }
 
-NBSocketBufferClass::~NBSocketBufferClass() {
+NBSocketBuffer::~NBSocketBuffer() {
     for (unsigned int i = 0; i < NB_SOCKET_NUM_BUFFERS; i++) {
         close(i);
     }
 }
 
-void NBSocketBufferClass::close(int socket) {
+void NBSocketBuffer::close(int socket) {
     if (_buffers[socket].data) {
         free(_buffers[socket].data);
         _buffers[socket].data = _buffers[socket].head = NULL;
@@ -46,7 +46,7 @@ void NBSocketBufferClass::close(int socket) {
     }
 }
 
-int NBSocketBufferClass::available(int socket) {
+int NBSocketBuffer::available(int socket) {
     if (_buffers[socket].length == 0) {
         if (_buffers[socket].data == NULL) {
             _buffers[socket].data = _buffers[socket].head = (uint8_t *) malloc(NB_SOCKET_BUFFER_SIZE);
@@ -104,7 +104,7 @@ int NBSocketBufferClass::available(int socket) {
     return _buffers[socket].length;
 }
 
-int NBSocketBufferClass::peek(int socket) {
+int NBSocketBuffer::peek(int socket) {
     if (!available(socket)) {
         return -1;
     }
@@ -112,7 +112,7 @@ int NBSocketBufferClass::peek(int socket) {
     return *_buffers[socket].head;
 }
 
-int NBSocketBufferClass::read(int socket, uint8_t *data, size_t length) {
+int NBSocketBuffer::read(int socket, uint8_t *data, size_t length) {
     int avail = available(socket);
 
     if (!avail) {

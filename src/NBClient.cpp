@@ -52,7 +52,7 @@ NBClient::NBClient(Modem &modem, int socket, bool synch) :
         _port(0),
         _ssl(false),
         _writeSync(true),
-        _nbSocketBuffer(NBSocketBufferClass(_modem)) {
+        _nbSocketBuffer(NBSocketBuffer(_modem)) {
     _modem.addUrcHandler(this);
 }
 

@@ -152,7 +152,7 @@ private:
 
     bool _writeSync;
     String _response;
-    NBSocketBufferClass _nbSocketBuffer;
+    NBSocketBuffer _nbSocketBuffer;
 };
 
 #endif

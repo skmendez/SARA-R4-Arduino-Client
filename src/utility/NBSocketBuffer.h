@@ -22,13 +22,13 @@
 
 #include "../Modem.h"
 
-class NBSocketBufferClass {
+class NBSocketBuffer {
 
 public:
 public:
-    NBSocketBufferClass(Modem &modem);
+    NBSocketBuffer(Modem &modem);
 
-    virtual ~NBSocketBufferClass();
+    virtual ~NBSocketBuffer();
 
     void close(int socket);
 
