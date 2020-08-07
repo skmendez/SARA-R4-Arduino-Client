@@ -20,6 +20,7 @@
 #include "Modem.h"
 
 #define MODEM_MIN_RESPONSE_OR_URC_WAIT_TIME_MS 20
+#define LTE_RESET_PULSE_PERIOD 10000
 
 Modem::Modem(Stream &uart, unsigned long baud, int resetPin, int powerOnPin,
              SerialStateUpdateHandler *handler) :
@@ -62,18 +63,10 @@ Modem::Modem(SoftwareSerial &uart, unsigned long baud, int resetPin, int powerOn
 
 int Modem::begin(bool restart) {
     _handler->updateState({_baud > 115200 ? 115200 : _baud, true});
-    //_uart->begin(_baud > 115200 ? 115200 : _baud);
-
     // power on module
-    pinMode(_powerOnPin, OUTPUT);
-    digitalWrite(_powerOnPin, HIGH);
+    powerOn(restart);
 
-    if (_resetPin == 255 && restart) {
-        pinMode(_resetPin, OUTPUT);
-        digitalWrite(_resetPin, HIGH);
-        delay(100);
-        digitalWrite(_resetPin, LOW);
-    } else {
+    if (!restart) {
         if (!autosense()) {
             return 0;
         }
@@ -107,10 +100,8 @@ int Modem::begin(bool restart) {
 
 void Modem::end() {
     _handler->updateState({_baud, false});
-    digitalWrite(_resetPin, HIGH);
-
     // power off module
-    digitalWrite(_powerOnPin, LOW);
+    powerOff();
 }
 
 void Modem::debug() {
@@ -335,6 +326,37 @@ void Modem::removeUrcHandler(ModemUrcHandler *handler) {
 
 void Modem::setBaudRate(unsigned long baud) {
     _baud = baud;
+}
+
+void Modem::powerOn(bool restart) const {
+
+    pinMode(_powerOnPin, OUTPUT);
+    digitalWrite(_powerOnPin, LOW);
+    //delay(LTE_SHIELD_POWER_PULSE_PERIOD);
+    pinMode(_powerOnPin, INPUT); // Return to high-impedance, rely on SARA module internal pull-up
+
+    if (_resetPin != 255 && restart) {
+        pinMode(_resetPin, OUTPUT);
+        digitalWrite(_resetPin, LOW);
+        delay(LTE_RESET_PULSE_PERIOD);
+        pinMode(_resetPin, INPUT); // Return to high-impedance, rely on SARA module internal pull-up
+    }
+
+    return;
+
+    pinMode(_powerOnPin, OUTPUT);
+    digitalWrite(_powerOnPin, HIGH);
+
+    if (_resetPin == 255 && restart) {
+        pinMode(_resetPin, OUTPUT);
+        digitalWrite(_resetPin, HIGH);
+        delay(100);
+        digitalWrite(_resetPin, LOW);
+    }
+}
+
+void Modem::powerOff() const {
+    pinMode(_powerOnPin, INPUT); // Return to high-impedance, rely on SARA module internal pull-up
 }
 
 Modem::~Modem() {

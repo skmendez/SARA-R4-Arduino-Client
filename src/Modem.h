@@ -142,6 +142,9 @@ private:
 #define MAX_URC_HANDLERS 8 // 7 sockets + GPRS
     ModemUrcHandler *_urcHandlers[MAX_URC_HANDLERS] = {nullptr};
     Print *_debugPrint = nullptr;
+
+    void powerOn(bool restart) const;
+    void powerOff() const;
 };
 
 #endif

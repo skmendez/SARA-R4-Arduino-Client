@@ -55,7 +55,7 @@ public:
 
     NB_NetworkStatus_t
     begin(const char *pin, const char *apn, const char *username, const char *password, bool restart = true,
-          bool synchronous = true);
+          bool synchronous = true, bool disableErrors = false);
 
     /** Check network access status
         @return 1 if Alive, 0 if down
