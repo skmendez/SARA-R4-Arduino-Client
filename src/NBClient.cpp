@@ -48,7 +48,7 @@ NBClient::NBClient(Modem &modem, int socket, bool synch) :
         _connected(false),
         _state(CLIENT_STATE_IDLE),
         _ip((uint32_t) 0),
-        _host(NULL),
+        _host(nullptr),
         _port(0),
         _ssl(false),
         _writeSync(true),
@@ -119,8 +119,7 @@ int NBClient::ready() {
         }
 
         case CLIENT_STATE_MANAGE_SSL_PROFILE: {
-            _modem.send("AT+USECPRF=0,0,1");
-
+            _modem.send("AT+USECPRF=0,0,0");
             _state = CLIENT_STATE_WAIT_MANAGE_SSL_PROFILE_RESPONSE;
             ready = 0;
             break;
@@ -137,7 +136,7 @@ int NBClient::ready() {
         }
 
         case CLIENT_STATE_CONNECT: {
-            if (_host != NULL) {
+            if (_host != nullptr) {
                 _modem.sendf("AT+USOCO=%d,\"%s\",%d", _socket, _host, _port);
             } else {
                 _modem.sendf("AT+USOCO=%d,\"%d.%d.%d.%d\",%d", _socket, _ip[0], _ip[1], _ip[2], _ip[3], _port);

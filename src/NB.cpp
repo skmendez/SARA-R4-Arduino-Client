@@ -75,7 +75,7 @@ NB_NetworkStatus_t NB::begin(const char *pin, const char *apn, bool restart, boo
 }
 
 NB_NetworkStatus_t NB::begin(const char *pin, const char *apn, const char *username, const char *password, bool restart,
-                             bool synchronous) {
+                             bool synchronous, bool disableErrors = false) {
     if (!_modem.begin(restart)) {
         _state = ERROR;
     } else {
@@ -84,7 +84,7 @@ NB_NetworkStatus_t NB::begin(const char *pin, const char *apn, const char *usern
         _username = username,
                 _password = password;
         _state = IDLE;
-        _readyState = READY_STATE_SET_ERROR_DISABLED;
+        _readyState = disableErrors ? READY_STATE_SET_ERROR_DISABLED : READY_STATE_SET_MINIMUM_FUNCTIONALITY_MODE;
 
         if (synchronous) {
             unsigned long start = millis();
