@@ -161,6 +161,24 @@ size_t Modem::write(const uint8_t *buf, size_t size) {
     return result;
 }
 
+size_t Modem::write_P(const uint8_t *raw_PGM, size_t size) {
+    uint8_t buff[128] __attribute__ ((aligned(4)));
+    auto len = size;
+    size_t n = 0;
+    while (n < len) {
+        int to_write = std::min((size_t) sizeof(buff), len - n);
+        memcpy_P(buff, raw_PGM, to_write);
+        auto written = write(buff, to_write);
+        n += written;
+        raw_PGM += written;
+        if (!written) {
+            // Some error, write() should write at least 1 byte before returning
+            break;
+        }
+    }
+    return n;
+}
+
 void Modem::send(const char *command) {
     // compare the time of the last response or URC and ensure
     // at least 20ms have passed before sending a new command

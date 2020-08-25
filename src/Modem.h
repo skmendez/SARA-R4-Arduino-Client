@@ -101,6 +101,8 @@ public:
 
     size_t write(const uint8_t *, size_t);
 
+    size_t write_P(const uint8_t *raw_PGM, size_t size);
+
     void send(const char *command);
 
     void send(const String &command) { send(command.c_str()); }
