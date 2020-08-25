@@ -166,7 +166,8 @@ size_t Modem::write_P(const uint8_t *raw_PGM, size_t size) {
     auto len = size;
     size_t n = 0;
     while (n < len) {
-        int to_write = std::min((size_t) sizeof(buff), len - n);
+        size_t remaining = len - n;
+        size_t to_write = sizeof(buff) > remaining ? remaining : sizeof(buff);
         memcpy_P(buff, raw_PGM, to_write);
         auto written = write(buff, to_write);
         n += written;

@@ -180,7 +180,7 @@ int NBClient::ready() {
 
 int NBClient::connect(IPAddress ip, uint16_t port) {
     _ip = ip;
-    _host = NULL;
+    _host = nullptr;
     _port = port;
     _ssl = false;
 
@@ -189,7 +189,7 @@ int NBClient::connect(IPAddress ip, uint16_t port) {
 
 int NBClient::connectSSL(IPAddress ip, uint16_t port) {
     _ip = ip;
-    _host = NULL;
+    _host = nullptr;
     _port = port;
     _ssl = true;
 
