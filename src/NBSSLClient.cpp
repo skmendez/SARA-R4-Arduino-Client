@@ -68,7 +68,12 @@ int NBSSLClient::ready() {
                     ready = -1;
                 } else {
                     // send the cert contents
-                    _modem.write_P(_securityData[_certIndex]->data, _securityData[_certIndex]->size);
+                    if (_securityData[_certIndex]->inPROGMEM) {
+                        _modem.write_P(_securityData[_certIndex]->data, _securityData[_certIndex]->size);
+                    } else {
+                        _modem.write(_securityData[_certIndex]->data, _securityData[_certIndex]->size);
+                    }
+
                     _state = SSL_CLIENT_STATE_WAIT_LOAD_ROOT_CERT_RESPONSE;
                     ready = 0;
                 }

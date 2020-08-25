@@ -1,3 +1,4 @@
+#include <sys/cdefs.h>
 /*
   This file is part of the MKR GSM library.
   Copyright (C) 2018 Arduino SA (http://www.arduino.cc/)
@@ -32,6 +33,7 @@ struct NBSecurityData {
         PK = 2,
     } certType;
     const int size;
+    bool inPROGMEM;
 };
 
 
@@ -133,7 +135,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0x86, 0x04
                 },
                 NBSecurityData::CA,
-                1082
+                1082,
+                false
         },
         {
                 "Baltimore_CyberTrust_Root",
@@ -215,7 +218,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0x63, 0x39, 0xa9
                 },
                 NBSecurityData::CA,
-                891
+                891,
+                false
         },
         {
                 "COMODO_RSA_Certification_Authority",
@@ -347,7 +351,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0x35, 0x53, 0x85, 0x06, 0x4a, 0x5d, 0x9f, 0xad, 0xbb, 0x1b, 0x5f, 0x74
                 },
                 NBSecurityData::CA,
-                1500
+                1500,
+                false
         },
         {
                 "DST_Root_CA_X3",
@@ -425,7 +430,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0xee, 0x9d, 0x82, 0x35, 0x35, 0x10
                 },
                 NBSecurityData::CA,
-                846
+                846,
+                false
         },
         {
                 "DigiCert_High_Assurance_EV_Root_CA",
@@ -513,7 +519,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0xf8, 0xe9, 0x2e, 0x13, 0xa3, 0x77, 0xe8, 0x1f, 0x4a
                 },
                 NBSecurityData::CA,
-                969
+                969,
+                false
         },
         {
                 "Entrust_Root_Certification_Authority",
@@ -618,7 +625,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0x85, 0x5b, 0x13, 0xfe, 0x1e, 0x7f, 0x5a, 0xb4, 0x3c
                 },
                 NBSecurityData::CA,
-                1173
+                1173,
+                false
         },
         {
                 "Equifax_Secure_Certificate_Authority",
@@ -692,7 +700,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0xa9, 0xa2, 0x87, 0x79, 0xef, 0x79, 0xef, 0x4f, 0xac, 0x07, 0x77, 0x38
                 },
                 NBSecurityData::CA,
-                804
+                804,
+                false
         },
         {
                 "GeoTrust_Global_CA",
@@ -771,7 +780,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0xa1, 0xcb, 0xe6, 0x33
                 },
                 NBSecurityData::CA,
-                856
+                856,
+                false
         },
         {
                 "GeoTrust_Primary_Certification_Authority_G3",
@@ -864,7 +874,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0x82, 0x12, 0xeb, 0x19, 0x11, 0x2d
                 },
                 NBSecurityData::CA,
-                1026
+                1026,
+                false
         },
         {
                 "GlobalSign",
@@ -951,7 +962,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0x38, 0x40, 0x64, 0x12, 0xf7, 0x9e, 0x81, 0xe1, 0x93, 0x2e
                 },
                 NBSecurityData::CA,
-                958
+                958,
+                false
         },
         {
                 "Go_Daddy_Root_Certificate_Authority_G2",
@@ -1039,7 +1051,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0xe2, 0xe2, 0x44, 0xbe, 0x5c, 0xf7, 0xea, 0x1c, 0xf5
                 },
                 NBSecurityData::CA,
-                969
+                969,
+                false
         },
         {
                 "VeriSign_Class_3_Public_Primary_Certification_Authority_G5",
@@ -1150,13 +1163,15 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0xed, 0x63, 0x6a
                 },
                 NBSecurityData::CA,
-                1239
+                1239,
+                false
         },
         {
                 "AmazonRootCA1",
                 nullptr, // remove
                 NBSecurityData::CA,
-                0
+                0,
+                false
         },
         {
                 "Starfield_Services_Root_Certificate_Authority_G2",
@@ -1248,7 +1263,8 @@ static const NBSecurityData DEFAULT_NB_ROOT_CERTS[] = {
                         0xb1, 0x28, 0xba
                 },
                 NBSecurityData::CA,
-                1011
+                1011,
+                false
         }
 };
 
